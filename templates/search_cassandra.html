@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>Handle POST requests with Flask</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div id="container">
+            <div class="title">
+                <h1>RECHERCHE</h1>
+            </div>
+            <div style="clear:both;">
+                <h2 style="float:left;padding:10px;"><a href="{{ url_for('search_cassandra') }}">SEARCH CASS</a></h2>
+                <h2 style="float:left;padding:10px;"><a href="{{ url_for('search_web') }}">SEARCH WEB</a></h2>
+            </div>
+            <div style="clear:both;"></div>
+            <div id="content">
+                <form method="post" action="{{ url_for('search_cassandra') }}">
+                  <label for="isbn">ISBN:</label>
+                  <input type="text" name="isbn" /><br />
+                  <label for="auteur">Auteur:</label>
+                  <input type="text" name="auteur" /><br />
+                  <label for="titre">Titre:</label>
+                  <input type="text" name="titre" /><br />
+                  <label for="editeur">Editeur:</label>
+                  <input type="text" name="editeur" /><br />
+                  <label for="annee">Annee:</label>
+                  <input type="text" name="annee" /><br />
+                  <!--<label for="searchsource">SEARCH ON</label>
+                  <input type="radio" name="searchsource" id="amazon" value="amazon"> Amazon </input><br>
+                  <input type="radio" name="searchsource" id="abebook" value="abebook"> Abebook </input><br>
+                  <input type="radio" name="searchsource" id="priceminister" value="priceminister"> Priceminister </input><br>
+                  <input type="radio" name="searchsource" id="ebay" value="ebay"> Ebay  </input><br>
+                  <input type="radio" name="searchsource" id="leboncoin" value="leboncoin"> Leboncoin </input><br>
+                  <input type="radio" name="searchsource" id="all" value="all"> ALL SOURCES </input><br>-->
+                  <input type="submit" name="search" />
+                </form>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>

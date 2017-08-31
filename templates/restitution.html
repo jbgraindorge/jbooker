@@ -1,0 +1,26 @@
+ <html>
+    <head>
+        <title>PRIX COTE ET HISTORIQUE DES PRIX DES LIVRES</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div id="container">
+            <div class="title">
+                <h1>PRIX COTE ET HISTORIQUE DES PRIX DES LIVRES : </h1>
+            </div>
+            <div id="content">
+                Vous recherchez isbn suivant <strong>{{isbn}}</strong> <br />
+                Le titre est <strong>{{titre}}</strong> <br />
+                Ecrit par <strong>{{auteur}}</strong> <br />
+                En <strong>{{annee}}</strong> <br />
+                Edite par <strong>{{editeur}}</strong> <br />
+                AMAZON PRICES <strong>{{az_prices}}</strong> <br />
+                PRICEMINISTER PRICES <strong>{{pm_prices}}</strong> <br />
+                EBAY PRICES <strong>{{eb_prices}}</strong> <br />
+                ABEBOOK PRICES <strong>{{ab_prices}}</strong> <br />
+                LBC PRICES <strong>{{lb_prices}}</strong> <br />
+
+            </div>
+         </div>
+    </body>
+</html>

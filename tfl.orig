@@ -1,0 +1,196 @@
+#!/usr/local/bin/python3-jb
+from flask import Flask, render_template, request, url_for
+from cassandra.cluster import Cluster
+from cassandra import util
+import cassandra
+import sys
+import uuid
+import csv
+import time
+import datetime
+import requests
+import bookt
+from lxml import html
+
+app = Flask(__name__)
+
+@app.route('/')
+def form():
+    return render_template('form_submit.html')
+
+@app.route('/hello/', methods=['POST'])
+def hello():
+    if request.form['isbn']:
+        isbn=request.form['isbn']
+        from bookt import isbn_check, search_isbn, search_prices
+        isbn = isbn_check(isbn)
+        #    if request.form['searchsource'] == 'amazon':
+        #        print("I SEARCH ON AMAZON")
+        #    elif request.form['searchsource'] == 'leboncoin':
+        #        print("I SEARCH ON LEBONCOIN")
+        #    else :
+        #print("I SEARCH EVERYWHERE")
+        search_rez = search_isbn(isbn)
+        print(search_rez)
+        #SI DS CASSANDRA ON AFFICHE LES PRIX
+        if search_rez:
+            gprices = search_prices(search_rez[4])
+            if gprices:
+                editeur=search_rez[0]
+                annee=search_rez[2]
+                auteur=search_rez[3]
+                titre=search_rez[1]
+                az_prices=gprices[0]
+                pm_prices=gprices[3]
+                eb_prices=gprices[2]
+                ab_prices=gprices[1]
+                lb_prices=gprices[4]
+                #annee=request.form['annee']#auteur=request.form['auteur']#titre=request.form['titre']
+                #return render_template('form_action.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur, data=rez)
+                return render_template('form_action.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur, az_prices=az_prices, pm_prices=pm_prices,eb_prices=eb_prices,ab_prices=ab_prices,lb_prices=lb_prices)
+            else:
+                print("J'ai pas les prices")
+                editeur=search_rez[0]
+                annee=search_rez[2]
+                auteur=search_rez[3]
+                titre=search_rez[1]
+                return render_template('last.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur)
+        else:
+            #SI PAS DANS CASSANDRA, ON CHERCHE AVEC ISBNLIB
+            ####NEWCODE
+            import isbnlib
+            if isbnlib.is_isbn10(isbn) or isbnlib.is_isbn13(isbn):
+                primar_info = isbnlib.meta(isbn, service='default', cache='default')
+                print(primar_info)
+                #print(primar_info['ISBN-13'])
+                if primar_info: return render_template('last.html', titre=primar_info['Title'], isbn=primar_info['ISBN-13'], editeur=primar_info['Publisher'], annee=primar_info['Year'], auteur=primar_info['Authors'][0], )
+            ####NEWCODE
+            #return render_template('404.html')
+            import googlebook
+            gapi = googlebook.Api()
+            qury="isbn:" + isbn
+            rez = gapi.list(qury)
+            print("GOOGLEBOOK API REZ : " + str(rez))
+            print(rez['totalItems'])
+            #SI PAS SUR GOOGLEBOOK, ON CHERCHE SUR ABEBOOK)
+            if rez['totalItems'] == 0: #or 'publisher' not in rez:
+                from bookt import ab_search2
+                renvoi2 = ab_search2(isbn)
+                if renvoi2:
+                    annee = str(renvoi2[1])
+                    editeur = str(renvoi2[0])
+                    auteur = str(renvoi2[3])
+                    titre = str(renvoi2[2])
+                    return render_template('last.html', titre=titre, annee=annee, auteur=auteur, isbn=isbn, editeur=editeur)
+                else :
+                    ##SI PAS SUR ABEBOOK, ON CHERCHE SUR AMAZON
+                    from bookt import az_search
+                    renvoi_info = az_search(isbn)
+                    return render_template('form_action.html')
+            elif 'publisher' not in rez['items'][0]['volumeInfo']:
+                ##SI IL MANQUE DES INFOS ON CHERCHE LE MANQUE SUR ABE
+                from bookt import ab_search
+                #renvoi = az_search(isbn)
+                renvoi = ab_search(isbn)
+                annee = str(renvoi[1])
+                editeur = str(renvoi[0])
+                #auteur = str(renvoi[2])
+                auteur = rez['items'][0]['volumeInfo']['authors'][0]
+                #titre = str(renvoi[0])
+                titre = rez['items'][0]['volumeInfo']['title']
+                return render_template('last.html', titre=titre, annee=annee, auteur=auteur, isbn=isbn, editeur=editeur)
+            else:
+                #SINON ON RESTITUE LES RESULTATS DE GOOGLEBOOK
+                #titre=rez['items'][0]['volumeInfo']['title']
+                if rez['items'][0]['volumeInfo']['title']: titre=rez['items'][0]['volumeInfo']['title']
+                #auteur=rez['items'][0]['volumeInfo']['authors'][0]
+                if rez['items'][0]['volumeInfo']['authors'][0]: auteur=rez['items'][0]['volumeInfo']['authors'][0]
+                #annee=rez['items'][0]['volumeInfo']['publishedDate']
+                if rez['items'][0]['volumeInfo']['publishedDate']: annee=rez['items'][0]['volumeInfo']['publishedDate']
+                #editeur=rez['items'][0]['volumeInfo']['publisher']
+                if rez['items'][0]['volumeInfo']['publisher']: editeur=rez['items'][0]['volumeInfo']['publisher']
+                #print(rez['items'][0])
+                #print("auteur : " + auteur + " titre : " + titre)
+                return render_template('last.html', titre=titre, annee=annee, auteur=auteur, isbn=isbn, editeur=editeur)
+    else:
+        from bookt import search_cass
+        booktry=search_cass(request.form['titre'],request.form['auteur'],request.form['annee'],request.form['editeur'])
+        print(booktry)
+        if booktry:
+            return render_template('rez.html', booktry=booktry,titre=booktry[1], editeur=booktry[0], annee=booktry[2], auteur=booktry[3])
+        else:
+            return render_template('404.html')
+
+@app.route('/mysearch/', methods=['POST'])
+def mysearch():
+    from bookt import selector, insertor, glob_search, search_prices
+    ##ICI ON RECUP NOS RESULTATS
+    bookid = selector(request.form['isbn'])
+    if bookid:
+        print("ALREADY INSERTED" + str(bookid))
+    else:
+        print("NEED TO INSERT")
+        bookid = insertor(request.form['isbn'],request.form['titre'],request.form['auteur'],request.form['annee'],request.form['editeur'])
+    glob_search(request.form['isbn'],request.form['titre'],request.form['auteur'],request.form['annee'],request.form['editeur'],bookid)
+    gprices = search_prices(bookid)
+    isbn = request.form['isbn']
+    editeur = request.form['editeur']
+    annee = request.form['annee']
+    auteur = request.form['auteur']
+    titre = request.form['titre']
+    if gprices:
+        az_prices=gprices[0]
+        pm_prices=gprices[3]
+        eb_prices=gprices[2]
+        ab_prices=gprices[1]
+        lb_prices=gprices[4]
+        #annee=request.form['annee']#auteur=request.form['auteur']#titre=request.form['titre']
+        #return render_template('form_action.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur, data=rez)
+        return render_template('form_action.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur, az_prices=az_prices, pm_prices=pm_prices,eb_prices=eb_prices,ab_prices=ab_prices,lb_prices=lb_prices)
+    else:
+        return render_template('form_action.html', titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur)
+    #return render_template('restitution.html',titre=titre, isbn=isbn, editeur=editeur, annee=annee, auteur=auteur, az_prices=az_prices, pm_prices=pm_prices,eb_prices=eb_prices,ab_prices=ab_prices,lb_prices=lb_prices)
+
+@app.route('/search-cassandra', methods=['GET', 'POST'])
+def search_cassandra():
+    if request.method == 'POST':
+        if request.form['isbn']:
+            isbn=request.form['isbn']
+            from bookt import isbn_check, search_isbn, search_prices
+            isbn = isbn_check(isbn)
+            search_rez = search_isbn(isbn)
+            #print(search_rez)
+            #SI DS CASSANDRA ON AFFICHE LES PRIX
+            if search_rez:
+                gprices = search_prices(search_rez[4])
+                if gprices:
+                    return render_template('form_action.html', titre=search_rez[1], isbn=isbn, editeur=search_rez[0], annee=search_rez[2], auteur=search_rez[3], az_prices=gprices[0], pm_prices=gprices[3], eb_prices=gprices[2], ab_prices=gprices[1], lb_prices=gprices[4])
+                else:
+                    #print("J'ai pas les prices")
+                    return render_template('last.html', titre=search_rez[1], isbn=isbn, editeur=search_rez[0], annee=search_rez[2], auteur=search_rez[3])
+            else:
+                from bookt import imetafromweb
+                imeta = imetafromweb(isbn)
+                print(imeta)
+                print(type(imeta))
+                return render_template('last.html', titre=imeta[0], isbn=imeta[1], editeur=imeta[2], annee=imeta[3], auteur=imeta[4])
+        elif request.form['titre'] or request.form['auteur'] or request.form['annee'] or request.form['editeur']:
+            from bookt import search_cass
+            booktry=search_cass(request.form['titre'],request.form['auteur'],request.form['annee'],request.form['editeur'])
+            print(booktry)
+            #editeur=booktry[0]
+            #annee=booktry[2]
+            #auteur=booktry[3]
+            #titre=booktry[1]
+            if booktry:
+                return render_template('rez.html', booktry=booktry, titre=booktry[1], editeur=booktry[0], annee=booktry[2], auteur=booktry[3])
+            else:
+                return render_template('search_cassandra.html')
+        else:
+            return render_template('404.html')
+    else:
+        return render_template('search_cassandra.html')
+
+@app.route('/search-web')
+def search_web():
+    return render_template('form_submit.html')
