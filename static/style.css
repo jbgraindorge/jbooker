@@ -21,8 +21,7 @@ a {
     background: #32373a;
     position: relative;
     height: 50px;
-    width: 29%;
-    float: left;
+    width: 100%;
 }
 
 h1 {
@@ -47,13 +46,11 @@ code {
 #content {
     padding: 20px;
     zoom: 1;
-    width: 30%;
-    float: left;
+    width: 100%;
 }
 
 #content2 {
-  width: 40%;
-  float: left;
+  width: 100%;
 }
 
 #body{
