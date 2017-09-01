@@ -8,7 +8,7 @@
             <div class="title">
                 <h1><a href="{{ url_for('form') }}" style="background-color:#ffffff;">BOOK SEARCH</a></h1>
             </div>
-            <div id="results" style="width:60%;float:right;">
+            <div id="results">
               {% if toomuch %}
               I'M SORRY BUT I THERE IS TOO MUCH RESULTS
               {% endif %}
@@ -41,60 +41,27 @@
               </div>
                 <div id="content">
                 <form method="post" action="{{ url_for('hello') }}">
+                  {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
+                  <label for="search_type">Launch this search on :</label>
+                  <div style="width:80%;margin-left:10%;">
+                  <input type="checkbox" name="all" value="all" /><span style="margin-left:10px;">ALL</span>
+                  <input type="checkbox" name="amazon" value="amazon" /><span style="margin-left:10px;">Amazon</span>
+                  <input type="checkbox" name="abebook" value="abebook" /><span style="margin-left:10px;">AbeBook</span>
+                  <input type="checkbox" name="ebay" value="ebay" /><span style="margin-left:10px;">Ebay</span>
+                  <input type="checkbox" name="priceminister" value="priceminister" /><span style="margin-left:10px;">Priceminister</span>
+                  <input type="checkbox" name="leboncoin" value="leboncoin" /><span style="margin-left:10px;">LeBonCoin</span>
+                  </div>
+                  {% endif %}
                   <label for="isbn">ISBN 10:</label><input type="number" name="isbn10" value="{{isbn10}}" />
                   <label for="isbn">ISBN 13:</label><input type="text" name="isbn13" value="{{isbn13}}" />
                   <label for="auteur">Auteur:</label><input type="text" name="auteur" value="{{auteur}}" />
                   <label for="titre">Titre:</label><input type="text" name="titre" value="{{titre}}" />
                   <label for="editeur">Editeur:</label><input type="text" name="editeur" value="{{editeur}}" />
                   <label for="annee">Annee:</label><input type="number" name="annee" value="{{annee}}" />
-                  {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
-                  <label for="search_type">search on:</label>
-                  <input type="checkbox" name="all" value="all" /><span>ALL</span>
-                  <input type="checkbox" name="amazon" value="amazon" /><span>Amazon</span>
-                  <input type="checkbox" name="abebook" value="abebook" /><span>AbeBook</span>
-                  <input type="checkbox" name="ebay" value="ebay" /><span>Ebay</span>
-                  <input type="checkbox" name="priceminister" value="priceminister" /><span>Priceminister</span>
-                  <input type="checkbox" name="leboncoin" value="leboncoin" /><span>LeBonCoin</span>
-                  {% endif %}
-                  <input type="submit" name="search" />
+                  <br /><input type="submit" name="search" />
                 </form>
               </div>
             </div>
-          <!--  {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
-            <div id="content2" style="padding:20px;">
-              <form method="post" action="{{ url_for('mysearch') }}">
-                <input type="hidden" name="isbn10" value="{{isbn10}}" />
-                <input type="hidden" name="isbn13" value="{{isbn13}}" />
-                <input type="hidden" name="auteur" value="{{auteur}}" />
-                <input type="hidden" name="titre" value="{{titre}}" />
-                <input type="hidden" name="editeur" value="{{editeur}}" />
-                <input type="hidden" name="annee" value="{{annee}}" />
-                ! WEB PRICES SEARCH  !
-                <input type="submit" name="search" />
-              </form>
-              <div id="content3" style="padding:20px;">
-
-                  <form method="post" action="{{ url_for('lbc_search') }}">
-                    <input type="hidden" name="isbn10" value="{{isbn10}}" />
-                    <input type="hidden" name="isbn13" value="{{isbn13}}" />
-                    <input type="hidden" name="auteur" value="{{auteur}}" />
-                    <input type="hidden" name="titre" value="{{titre}}" />
-                    <input type="hidden" name="editeur" value="{{editeur}}" />
-                    <input type="hidden" name="annee" value="{{annee}}" />
-                    LBC SEARCH
-                    <input type="submit" name="search" />
-                  </form>
-                  <form method="post" action="{{ url_for('amazon_search') }}">
-                    <input type="hidden" name="isbn10" value="{{isbn10}}" />
-                    <input type="hidden" name="isbn13" value="{{isbn13}}" />
-                    <input type="hidden" name="auteur" value="{{auteur}}" />
-                    <input type="hidden" name="titre" value="{{titre}}" />
-                    <input type="hidden" name="editeur" value="{{editeur}}" />
-                    <input type="hidden" name="annee" value="{{annee}}" />
-                    AMAZON SEARCH
-                    <input type="submit" name="search" />
-                  </form>
-            {% endif %}  -->
               {% if lbc_rez %}
               WE HAVE LBC REZ
               {% for item in lbc_rez %}

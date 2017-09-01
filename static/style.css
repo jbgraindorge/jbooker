@@ -31,6 +31,7 @@ h1 {
     font-weight: 400;
     line-height: 50px;
     text-transform: capitalize;
+    text-align: center;
 }
 
 code {
@@ -47,6 +48,12 @@ code {
     padding: 20px;
     zoom: 1;
     width: 100%;
+}
+#results {
+    padding: 20px;
+    zoom: 1;
+    width: 80%;
+    margin-left:10%;
 }
 
 #content2 {
@@ -76,6 +83,7 @@ p.footer{
 form label{
     display: block;
     margin-bottom: 5px;
+    text-align:center;
 }
 form input[type=text]{
     border: 1px solid #aaa;
@@ -85,10 +93,45 @@ form input[type=text]{
     padding: 5px;
     margin-bottom: 20px;
     outline: 0;
+    width: 80%;
+    margin-left: 10%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
     -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+form input[type=number]{
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  box-sizing: border-box;
+  padding: 5px;
+  margin-bottom: 20px;
+  outline: 0;
+  width: 80%;
+  margin-left: 10%;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+form input[type=checkbox]{
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  box-sizing: border-box;
+  padding: 5px;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  outline: 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  -ms-transform: scale(2); /* IE */
+-moz-transform: scale(2); /* FF */
+-webkit-transform: scale(2); /* Safari and Chrome */
+-o-transform: scale(2); /* Opera */
 }
 form input[type=submit]{
     background: #198ad1;
@@ -109,4 +152,6 @@ form input[type=submit]{
     border: 0;
     cursor: pointer;
     text-align: center;
+    width: 80%;
+    margin-left: 10%;
 }
