@@ -59,7 +59,7 @@ def hello():
                 return render_template('rez2.html', zeroeverywhere=zeroeverywhere)
             else:
                 ##IF INFOS FOUND DISPLAY THEM (BUT NO WEB PRICE SEARCH)
-                return render_template('rez2.html', titre=imeta['titre'], isbn13=imeta['isbn13'], editeur=imeta['editeur'], annee=imeta['date'], auteur=imeta['auteur'], isbn10=imeta['isbn10'])
+                return render_template('rez2.html', titre=imeta['titre'], isbn13=imeta['isbn13'], editeur=imeta['editeur'], annee=imeta['date'], auteur=imeta['auteur'], isbn10=imeta['isbn10'], cover=imeta['img'])
 
         elif request.form['titre'] or request.form['auteur'] or request.form['annee'] or request.form['editeur']:
             from books_infos import metafromweb

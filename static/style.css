@@ -54,7 +54,12 @@ code {
     width: 80%;
     margin-left:10%;
 }
-
+#cover {
+    padding: 10px;
+    zoom: 1;
+    width: 10%;
+    float:left;
+}
 #content2 {
   width: 100%;
 }

@@ -380,7 +380,8 @@ def imetafrom_abe(isbn10=None,isbn13=None):
         ab_tit = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/h2/a/span/text()')
         ab_aut = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/p[contains(@class, \'author\')]/strong/text()')
         ab_isbn10 = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/div[contains(@class, \'m-md-b\')]/p[contains(@class, \'isbn small\')]/span[1]/a/text()')
-        abe_info13 = ab_tit + ab_aut + ab_pub + ab_date + ab_isbn10
+        ab_img = ab_tree.xpath('//a[@id=\'listing_1\']/img[contains(@class, \'portrait\')]/@src')
+        abe_info13 = ab_tit + ab_aut + ab_pub + ab_date + ab_isbn10 + ab_img
     else:
         abe_info13 = None
     if isbn10:
@@ -394,7 +395,8 @@ def imetafrom_abe(isbn10=None,isbn13=None):
         ab_tit = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/h2/a/span/text()')
         ab_aut = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/p[contains(@class, \'author\')]/strong/text()')
         ab_isbn13 = ab_tree.xpath('//div[@id=\'book-1\']/div[contains(@class, \'result-data col-xs-9 cf\')]/div[contains(@class, \'result-detail col-xs-8\')]/div[contains(@class, \'m-md-b\')]/p[contains(@class, \'isbn small\')]/span[2]/a/text()')
-        abe_info10 = ab_tit + ab_aut + ab_pub + ab_date + ab_isbn13
+        ab_img = ab_tree.xpath('//a[@id=\'listing_1\']/img[contains(@class, \'portrait\')]/@src')
+        abe_info10 = ab_tit + ab_aut + ab_pub + ab_date + ab_isbn13 + ab_img
     else:
         abe_info10 = None
     return(abe_info10,abe_info13)
@@ -423,10 +425,10 @@ def imetafromweb(isbn10=None,isbn13=None):
     print(abe_info10,abe_info13)
     ############# FIN DE LA CONSOLIDATION ET RETURN DES INFOS
     if isbnlib_info10 and isbnlib_info10['Title']:
-        isbnlibinfo10 = {'titre' : isbnlib_info10['Title'], 'auteur' : isbnlib_info10['Authors'][0], 'date' : isbnlib_info10['Year'], 'editeur': isbnlib_info10['Publisher'], 'isbn10' : isbn10 , 'isbn13' : isbnlib_info10['ISBN-13'] }
+        isbnlibinfo10 = {'titre' : isbnlib_info10['Title'], 'auteur' : isbnlib_info10['Authors'][0], 'date' : isbnlib_info10['Year'], 'editeur': isbnlib_info10['Publisher'], 'isbn10' : isbn10 , 'isbn13' : isbnlib_info10['ISBN-13'], 'img' : abe_info10[5] }
         return(isbnlibinfo10)
     elif isbnlib_info13 and isbnlib_info13['Title']:
-        isbnlibinfo13 = {'titre' : isbnlib_info13['Title'], 'auteur' : isbnlib_info13['Authors'][0], 'date' : isbnlib_info13['Year'], 'editeur': isbnlib_info13['Publisher'], 'isbn13' : isbnlib_info10['ISBN-13'], 'isbn10' : abe_info13[4]}
+        isbnlibinfo13 = {'titre' : isbnlib_info13['Title'], 'auteur' : isbnlib_info13['Authors'][0], 'date' : isbnlib_info13['Year'], 'editeur': isbnlib_info13['Publisher'], 'isbn13' : isbnlib_info10['ISBN-13'], 'isbn10' : abe_info13[4], 'img' : abe_info13[5]}
         return(isbnlibinfo13)
     ############ CONSOLIDATION DES INFOS
     if amazon_info13:

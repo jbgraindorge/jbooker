@@ -1,6 +1,6 @@
  <html>
     <head>
-        <title>BOOK SEARCH</title>
+        <title>BOOK SEARCH - FAQ</title>
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
@@ -11,12 +11,20 @@
 </a></a></span></h1>
 
             </div>
-            <div id="cover">
-              {% if cover %}
-              <img src="{{cover}}" width="150px"><br />
-              {% endif %}
-            </div>
-            <div id="results">
+<div>
+#########################<br/>
+######## FRENCH #########<br/>
+#########################<br/>
+<p>Cette application permet de chercher des informations et des prix concernant un livre</p>
+<li>Entrez un ISBN-10/13 ou des informations (même partielles) concernant l'ouvrage recherché puis cliquer sur "Valider"</li>
+<li>Pour un résultat optimal entrez au moins : un mot du titre , un nom d'auteur. L'année et l'éditeur permettent de filtrer plus précisemment les résultats (surtout des livres sans ISBN)</li>
+<li>Le script effectue une première recherche (Titre, Auteur, Année, Éditeur, ISBN si applicable) et restitue les informations</li>
+<li>Si la recherche n'arrive pas à filtrer précisement, le script peut générer une erreur, il est conseillé de préciser la recherche</li>
+<li>Vous avez le choix entre modifier ces informations, et relancer une recherche d'informations, ou lancer une recherche de prix.</li>
+<li>Pour lancer une recherche de prix, cochez simplement la case "ALL" qui effectuera une recherche de prix "globale" sur toutes les sources.</li>
+<li>Si vous souhaitez rechercher sur un site en particulier, cochez la case lui correspondant. (Attention fonctions non dispo)</li>
+    </div>
+            <!--<div id="results">
               {% if toomuch %}
               I'M SORRY BUT I THERE IS TOO MUCH RESULTS
               {% endif %}
@@ -83,7 +91,8 @@
               {% endfor %}
               {% endif %}
 
-         </div>
+         </div>-->
+       </div>
          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{
   url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
