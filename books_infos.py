@@ -496,7 +496,7 @@ def get_isbn_amazon(abmeta):
     auteur=auteur.split()
     auteur=max(auteur, key=len)
     #az_url="https://www.amazon.fr/gp/search/ref=sr_adv_b/?search-alias=stripbooks&__mk_fr_FR=%C3%85M%C3%85Z%C3%95%C3%91&unfiltered=1&field-keywords=&field-author=" + auteur + "&field-title=" + titre + "&field-isbn=&field-publisher=" + editeur + "&field-collection=&node=&field-binding_browse-bin=&field-dateop=&field-datemod=&field-dateyear=" + annee + "&sort=relevancerank&Adv-Srch-Books-Submit.x=42&Adv-Srch-Books-Submit.y=3"
-    az_url="https://www.amazon.fr/gp/search/ref=sr_adv_b/?search-alias=stripbooks&__mk_fr_FR=%C3%85M%C3%85Z%C3%95%C3%91&unfiltered=1&field-keywords=&field-author=" + auteur + "&field-title=" + keyword + "&field-isbn=&field-publisher=&field-collection=&node=&field-binding_browse-bin=&field-dateop=&field-datemod=&field-dateyear=&sort=relevancerank&Adv-Srch-Books-Submit.x=42&Adv-Srch-Books-Submit.y=3"
+    az_url="https://www.amazon.fr/gp/search/ref=sr_adv_b/?search-alias=stripbooks&unfiltered=1&field-keywords=&field-author=" + auteur + "&field-title=" + keyword + "&field-isbn=&field-publisher=&field-collection=&node=&field-binding_browse-bin=&field-dateop=&field-datemod=&field-dateyear=&sort=relevancerank&Adv-Srch-Books-Submit.x=42&Adv-Srch-Books-Submit.y=3"
     print(az_url)
     headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.72 Safari/537.36'
