@@ -14,6 +14,11 @@ app = Flask(__name__)
 def form():
     return render_template('rez2.html')
 
+@app.route('/faq/')
+def faq():
+    print("this is the faq")
+    return render_template('faq.html')
+
 @app.route('/hello/', methods=['POST'])
 def hello():
     if request.method == 'POST':

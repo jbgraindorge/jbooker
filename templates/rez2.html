@@ -6,7 +6,8 @@
     <body>
         <div id="container">
             <div class="title">
-                <h1><a href="{{ url_for('form') }}" style="background-color:#ffffff;">BOOK SEARCH</a></h1>
+                <h1><a href="{{ url_for('form') }}" style="color:#000000;">BOOK SEARCH</a><span style="float:right;"><a href="{{ url_for('faq') }}" target="_blank">FAQ</a></span></h1>
+
             </div>
             <div id="results">
               {% if toomuch %}
