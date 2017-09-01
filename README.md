@@ -1,7 +1,11 @@
 # jbooker
 Books prices scraper (optimized for french market)
 
-I know : this code is awfull, I just made it quickly and I'm not a professionnal python developer, so any improvement, advice or tip is welcome
+This python flask script / application, scrap several sources to get informations and prices about a book
+
+Current sources : Amazon, Abebook, Ebay, Priceminister and LebonCoin (LeBonCoin is a very famous ads service in France, similar to Craigslist)
+
+NB : I know this code is really awfull, I just made it quickly and I'm not a professionnal python developer, so any improvement, advice or tip is welcome. I just made it to answer my specific needs and I'll try to improve it on a regular basis.
 
 ## Requirements
 ```
@@ -25,4 +29,6 @@ export FLASK_DEBUG=1  #run in debug mode to enable auto-reload
 FLASK_APP=app.py flask run
 ```
 
-You can also push it on Heroku
+Then go to 127.0.0.1:5000 to enjoy this wonderful killer-application :)
+
+You can also push it on Heroku and host it on a free dyno
