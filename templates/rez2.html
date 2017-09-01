@@ -41,12 +41,12 @@
               </div>
                 <div id="content">
                 <form method="post" action="{{ url_for('hello') }}">
-                  <label for="isbn">ISBN 10:</label><input type="text" name="isbn10" value="{{isbn10}}" />
+                  <label for="isbn">ISBN 10:</label><input type="number" name="isbn10" value="{{isbn10}}" />
                   <label for="isbn">ISBN 13:</label><input type="text" name="isbn13" value="{{isbn13}}" />
                   <label for="auteur">Auteur:</label><input type="text" name="auteur" value="{{auteur}}" />
                   <label for="titre">Titre:</label><input type="text" name="titre" value="{{titre}}" />
                   <label for="editeur">Editeur:</label><input type="text" name="editeur" value="{{editeur}}" />
-                  <label for="annee">Annee:</label><input type="text" name="annee" value="{{annee}}" />
+                  <label for="annee">Annee:</label><input type="number" name="annee" value="{{annee}}" />
                   {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
                   <label for="search_type">search on:</label>
                   <input type="checkbox" name="all" value="all" /><span>ALL</span>
