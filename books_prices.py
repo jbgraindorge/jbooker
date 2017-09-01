@@ -129,7 +129,7 @@ def ebay_icheck(isbn_cleaned):
 #########################################################
 ## PRICES SEARCH ON LBC
 #########################################################
-def lbc_check(titre,auteur):
+def lbc_check(titre,auteur,need_details=None):
     import inspect
     print("check LBC 4 " + str(titre) + " " + str(auteur))
     ori=titre
@@ -163,8 +163,8 @@ def lbc_check(titre,auteur):
     lbc_titles = [x.replace('\n                                \n\t\t\t\t\t\t\t','') for x in lbc_titles]
     print("LBC TITLES : " + str(len(lbc_titles)) + str(lbc_titles))
     print("LBC URLS : " + str(len(lbc_url)) + str(lbc_url))
-    tata = zip(lbc_prices,lbc_url,lbc_titles)
-    print(tata)
+    lbc_all_rez = zip(lbc_prices,lbc_url,lbc_titles)
+    print(lbc_all_rez)
     print(inspect.stack()[1][3])
     if len(lbc_prices) > 10:
         print("I WILL TRY TO GIVE ANOTHER SHOT")
@@ -190,8 +190,8 @@ def lbc_check(titre,auteur):
         lbc_titles = [x.replace('\n                                \n\t\t\t\t\t\t\t','') for x in lbc_titles]
         print("LBC TITLES : " + str(len(lbc_titles)) + str(lbc_titles))
         print("LBC URLS : " + str(len(lbc_url)) + str(lbc_url))
-        tata = zip(lbc_prices2,lbc_url,lbc_titles)
-        print(tata)
+        lbc_all_rez = zip(lbc_prices2,lbc_url,lbc_titles)
+        print(lbc_all_rez)
         print(inspect.stack()[1][3])
         if len(lbc_prices2) > 10:
             print("STILL TOO MUCH, LAST CHANCE, STRICT SEARCH")
@@ -219,18 +219,19 @@ def lbc_check(titre,auteur):
             print("LBC TITLES : " + str(len(lbc_titles)) + str(lbc_titles))
             print("LBC URLS : " + str(len(lbc_url)) + str(lbc_url))
             print("LAST LBC PRICES : " + str(len(lbc_prices3)) + str(lbc_prices3))
-            tata = zip(lbc_prices3,lbc_url,lbc_titles)
-            print(tata)
+            lbc_all_rez = zip(lbc_prices3,lbc_url,lbc_titles)
+            print(lbc_all_rez)
             print(inspect.stack()[1][3])
-            if inspect.stack()[1][3] == 'lbc_search' and tata: return(tata)
+            if need_details == True and lbc_all_rez: return(lbc_all_rez)
             if lbc_prices3:
                 return(lbc_prices3)
         else:
-            if inspect.stack()[1][3] == 'lbc_search' and tata: return(tata)
+            #if inspect.stack()[1][3] == 'lbc_search' and lbc_all_rez: return(lbc_all_rez)
+            if need_details == True and lbc_all_rez: return(lbc_all_rez)
             if lbc_prices2:
                 return(lbc_prices2)
     else:
-        if inspect.stack()[1][3] == 'lbc_search' and tata: return(tata)
+        if need_details == True and lbc_all_rez: return(lbc_all_rez)
         if lbc_prices:
             return(lbc_prices)
 

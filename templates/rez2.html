@@ -47,11 +47,20 @@
                   <label for="titre">Titre:</label><input type="text" name="titre" value="{{titre}}" />
                   <label for="editeur">Editeur:</label><input type="text" name="editeur" value="{{editeur}}" />
                   <label for="annee">Annee:</label><input type="text" name="annee" value="{{annee}}" />
+                  {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
+                  <label for="search_type">search on:</label>
+                  <input type="checkbox" name="all" value="all" /><span>ALL</span>
+                  <input type="checkbox" name="amazon" value="amazon" /><span>Amazon</span>
+                  <input type="checkbox" name="abebook" value="abebook" /><span>AbeBook</span>
+                  <input type="checkbox" name="ebay" value="ebay" /><span>Ebay</span>
+                  <input type="checkbox" name="priceminister" value="priceminister" /><span>Priceminister</span>
+                  <input type="checkbox" name="leboncoin" value="leboncoin" /><span>LeBonCoin</span>
+                  {% endif %}
                   <input type="submit" name="search" />
                 </form>
               </div>
             </div>
-            {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
+          <!--  {% if isbn10 or isbn13 or titre and auteur and editeur and annee %}
             <div id="content2" style="padding:20px;">
               <form method="post" action="{{ url_for('mysearch') }}">
                 <input type="hidden" name="isbn10" value="{{isbn10}}" />
@@ -85,7 +94,7 @@
                     AMAZON SEARCH
                     <input type="submit" name="search" />
                   </form>
-            {% endif %}
+            {% endif %}  -->
               {% if lbc_rez %}
               WE HAVE LBC REZ
               {% for item in lbc_rez %}
